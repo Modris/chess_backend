@@ -26,10 +26,6 @@ public class Stockfish {
 		this.processBuilder = new ProcessBuilder(engineLocation);
 	}
 	
-	public Stockfish() {
-		this.processBuilder = new ProcessBuilder();
-	}
-	
 	public int getStrength() {
 		return strength;
 	}
