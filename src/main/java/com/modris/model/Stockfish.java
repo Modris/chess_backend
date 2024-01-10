@@ -82,7 +82,9 @@ public class Stockfish {
 					logger.error("Error in finding the best move. Writer/Reader: " + error);
 				}
 			} else {
-				logger.error("Can't find the best move if Stockfish engine is not running!");
+				logger.error("Can't find the best move if Stockfish engine is not running! Something went wrong. Restarting engine.");
+				close();
+				start();
 				return "";
 			}
 			return "";

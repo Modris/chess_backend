@@ -3,7 +3,11 @@ package com.modris;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.event.EventListener;
+
+import com.modris.config.ProjectConfig;
+import com.modris.model.FenValidator;
 
 @SpringBootApplication
 public class Main {
@@ -14,6 +18,9 @@ public class Main {
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void afterStartUp() {
+		var context = new AnnotationConfigApplicationContext(ProjectConfig.class);
+		var fenValidator = context.getBean(FenValidator.class);
+		fenValidator.isFenValid("    rnbqkbnr/pppp1ppp/8/8/8/4Q3/PPPPPPPP/RNB1KBNR w KQkq - 0 1       ");
 	/*
 		var context = new AnnotationConfigApplicationContext(ProjectConfig.class);
 	
