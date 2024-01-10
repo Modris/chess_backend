@@ -14,78 +14,104 @@ public class FenValidator {
 		String[] fenArrayExtra = fen.split(" "); // for active color, castling, half move, fullmove
 		String[] fenArrayPieces = fenArrayExtra[0].split("/");
 
-		eightPartsCheck(fenArray);
-		
-		sixPartsCheck(fenArrayExtra);
-		activeColor(fenArrayExtra);
-		halfMoveCheck(fenArrayExtra);
-		fullMoveCheck(fenArrayExtra);
-		castlingCheck(fenArrayExtra);
-		enPassantCheck(fenArrayExtra);
-		
-		twoKingsCheck(fenArrayPieces);
-		return false;
+		return  eightPartsCheck(fenArray) 
+				&& sixPartsCheck(fenArrayExtra) 
+				&& activeColor(fenArrayExtra) 
+				&& halfMoveCheck(fenArrayExtra)
+				&& fullMoveCheck(fenArrayExtra) 
+				&& castlingCheck(fenArrayExtra) 
+				&& enPassantCheck(fenArrayExtra)
+				&& twoKingsCheck(fenArrayPieces) 
+				&& sixteenPieceCheck(fenArrayPieces);
 	}
 
-	private boolean eightPartsCheck(String fen[]) {
+	public boolean eightPartsCheck(String fen[]) {
 		return fen.length == 8;
 
 	}
 
-	private boolean sixPartsCheck(String fen[]) {
+	public boolean sixPartsCheck(String fen[]) {
 		return fen.length == 6;
 
 	}
 
-	private boolean activeColor(String fen[]) {
+	public boolean activeColor(String fen[]) {
 		return fen[1].length() == 1 && (fen[1].equals("w") || fen[1].equals("b"));
 	}
 
-	private boolean twoKingsCheck(String fen[]) {
-		int count = 0;
-		for(int i =0; i<fen.length; i++) {
-			if(fen[i].contains("k") || fen[i].contains("K")) {
-				count++;
+	public boolean twoKingsCheck(String fen[]) {
+		int twoKingCount = 0;
+		for (int i = 0; i < fen.length; i++) {
+			if (fen[i].contains("k") || fen[i].contains("K")) {
+				twoKingCount++;
 			}
 		}
-		return count == 2;
+		return twoKingCount == 2;
 	}
 
-	private boolean enPassantCheck(String fen[]) { 
+	public boolean sixteenPieceCheck(String fen[]) {
+		int whitePieceCount = 0;
+		int blackPieceCount = 0;
+		for (int i = 0; i < fen.length; i++) {
+
+			// Pieces should sum to eight. Otherwise return false.
+			int sumOfEight = 0;
+			for (int j = 0; j < fen[i].length(); j++) {
+				// If characters are not valid then we return false.
+				// valid characters: p,n,b,q,r,k, 1-8 numbers
+				if (!pieceSyntaxNumbers(fen[i].charAt(j)) && !pieceSyntax(fen[i].toLowerCase().charAt(j))) {
+					return false;
+				}
+				// count sum. If it's not 8 then return false.
+				if (pieceSyntax(fen[i].toLowerCase().charAt(j))) {
+					sumOfEight++;
+				} else if (pieceSyntaxNumbers(fen[i].charAt(j))) {
+					sumOfEight = sumOfEight + Character.getNumericValue(fen[i].charAt(j));
+				}
+				if (j == fen[i].length() - 1 && sumOfEight != 8) {
+					return false;
+				}
+
+				// White and Black piece count. Max 16 for each side, 32 in total.
+				if (pieceSyntax(fen[i].charAt(j)) && fen[i].charAt(j) == Character.toLowerCase(fen[i].charAt(j))) {
+					blackPieceCount++;
+				} else if (!pieceSyntaxNumbers(fen[i].charAt(j))) {
+					whitePieceCount++;
+				}
+			}
+		}
+		return whitePieceCount <= 16 || blackPieceCount <= 16 || (whitePieceCount + blackPieceCount) <= 32;
+	}
+
+	public boolean pieceSyntax(char piece) {
+		return (piece == 'p' || piece == 'n' || piece == 'b' || piece == 'q' || piece == 'r' || piece == 'k');
+	}
+
+	public boolean pieceSyntaxNumbers(char piece) {
+		return (piece == '1' || piece == '2' || piece == '3' || piece == '4' || piece == '5' || piece == '6'
+				|| piece == '7' || piece == '8');
+	}
+
+	public boolean enPassantCheck(String fen[]) {
 		// Either '-' or 'e6' is possible. Max length 1 or 2.
 		if (fen[3].length() == 1 && fen[3].charAt(0) == '-') {
 			return true;
 		} else if (fen[3].length() == 2) {
 			char file = fen[3].charAt(0);
 			char rank = fen[3].charAt(1);
-			if( (rank >= '1' && rank <='8') && fileCheck(file)) {
+			if ((rank >= '1' && rank <= '8') && fileCheck(file)) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
-	private boolean fileCheck(char file) {
-		return file == 'a' || file == 'b' || file == 'c' || file == 'd' || file == 'e'
-				|| file == 'f' || file == 'g' || file == 'h';
+
+	public boolean fileCheck(char file) {
+		return file == 'a' || file == 'b' || file == 'c' || file == 'd' || file == 'e' || file == 'f' || file == 'g'
+				|| file == 'h';
 	}
 
-	private boolean numbersOneToEighCheck(String fen) {
-
-		return false;
-	}
-
-	private boolean validInputCheck(String fen) { // 1-8, P,N,B,Q,R,-,K check
-
-		return false;
-	}
-
-	private boolean sumOfEightCheck(String fen) { // also no consecutive numbers.
-
-		return false;
-	}
-
-	private boolean castlingCheck(String fen[]) {
+	public boolean castlingCheck(String fen[]) {
 		fen[2] = fen[2].toLowerCase();
 		if (fen[2].length() <= 4) { // max we can have kQkQ. No more.
 			for (int i = 0; i < fen[2].length(); i++) {
@@ -98,19 +124,18 @@ public class FenValidator {
 		} else {
 			return false;
 		}
-
-		
-		// kK,kQ etc
+		// Future castling check: 
 		// if rooks are not in their starting positions no castling rights
+		
 		return false;
 	}
 
-	private boolean halfMoveCheck(String fen[]) {
+	public boolean halfMoveCheck(String fen[]) {
 		return Integer.valueOf(fen[4]) >= 0;
 
 	}
 
-	private boolean fullMoveCheck(String fen[]) {
+	public boolean fullMoveCheck(String fen[]) {
 		return Integer.valueOf(fen[5]) >= 1;
 	}
 }

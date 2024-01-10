@@ -20,8 +20,9 @@ public class Main {
 	public void afterStartUp() {
 		var context = new AnnotationConfigApplicationContext(ProjectConfig.class);
 		var fenValidator = context.getBean(FenValidator.class);
-		fenValidator.isFenValid("    rnbqkbnr/pppp1ppp/8/8/8/4Q3/PPPPPPPP/RNB1KBNR w KQkq - 0 1       ");
-	/*
+		//fenValidator.isFenValid("rnbqkbnr/pppp1ppp/8/8/8/4Q3/PPPPPPPP/RNB1KBNR w KQkq - 0 1");
+		fenValidator.isFenValid("rnbqkb1r/ppp1pppp/3p4/3nP3/3P4/5N2/PPP2PPP/RNBQKB1R b KQkq - 0 1");
+		/*
 		var context = new AnnotationConfigApplicationContext(ProjectConfig.class);
 	
 		var stockfish = context.getBean(Stockfish.class);
