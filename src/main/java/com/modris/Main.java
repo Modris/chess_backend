@@ -2,12 +2,6 @@ package com.modris;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.event.EventListener;
-
-import com.modris.config.ProjectConfig;
-import com.modris.model.FenValidator;
 
 @SpringBootApplication
 public class Main {
@@ -15,7 +9,7 @@ public class Main {
 	public static void main(String[] args) {
 		SpringApplication.run(Main.class, args);
 	}
-
+/*
 	@EventListener(ApplicationReadyEvent.class)
 	public void afterStartUp() {
 		var context = new AnnotationConfigApplicationContext(ProjectConfig.class);
@@ -40,7 +34,7 @@ public class Main {
 	*/
 		// rnbqk2r/pppp1p1p/8/7N/4Pp2/2B5/PPPP2PP/RN1QKB1R w KQkq - 0 1
 		
+	
 		
-		
-	}
+	
 }
