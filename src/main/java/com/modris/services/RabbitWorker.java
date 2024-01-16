@@ -4,6 +4,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
+import com.modris.model.ClientObject;
 import com.modris.model.Stockfish;
 
 @Service
@@ -18,11 +19,9 @@ public class RabbitWorker {
 	}
 
 	@RabbitHandler
-	//@SendTo("/websocket/client")
-	public String bestmove(String fen) {
-		System.out.println(fen + " Received");
-		String answer = stockfish.findBestMove(fen);
-		System.out.println("Sending back bestmove: "+answer);
-		return stockfish.findBestMove(fen);
+	public String bestmove(ClientObject obj) {
+		stockfish.setStrength(obj.getChosenElo());
+		String answer = stockfish.findBestMove(obj.getFen());
+		return answer;
 	}
 }
