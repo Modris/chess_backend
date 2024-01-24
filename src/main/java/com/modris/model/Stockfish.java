@@ -66,7 +66,7 @@ public class Stockfish {
 					writer.write(fenPosition);
 					writer.flush();
 
-					writer.write("go movetime 250\n"); // 250ms movetime.
+					writer.write("go movetime 100\n"); // 250ms movetime.
 					writer.flush();
 
 					String line = "";

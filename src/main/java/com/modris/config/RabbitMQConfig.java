@@ -4,21 +4,24 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-// This Configuration is the exact same as the manager one.
-// Except this is needed in case the manager app fails to start at first launch.
-// Then this application won't start because no queue can be Rabbit Listened to.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
-public class RabbitMQConfig {
+public class RabbitMQConfig  {
 
+	@Bean
+	public TopicExchange topicExchange() {
+	    return new TopicExchange("amqp.topic");
+	}
+	
 	@Bean
 	public DirectExchange direct() {
 		return new DirectExchange("main_exchange");
@@ -46,4 +49,5 @@ public class RabbitMQConfig {
 	    return new Jackson2JsonMessageConverter(jsonMapper);
 	}
 	
+
 }
