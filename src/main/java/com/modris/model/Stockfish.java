@@ -66,7 +66,7 @@ public class Stockfish {
 					writer.write(fenPosition);
 					writer.flush();
 
-					writer.write("go movetime 200\n"); // 200ms movetime.
+					writer.write("go movetime 100\n"); // 200ms movetime.
 					writer.flush();
 
 					String line = "";
@@ -97,9 +97,14 @@ public class Stockfish {
 			logger.info("Closing Stockfish engine...");
 		}
 		try {
-			reader.close();
-			writer.close();
-			logger.info("Closing Reader And Writer IO...");
+		     if (reader != null) {
+		            reader.close();
+		    		logger.info("Closing Reader");
+		        }
+		        if (writer != null) {
+		            writer.close();
+		        	logger.info("Closing Writer IO...");
+		        }
 		} catch (IOException error) {
 			logger.error("Exception closing reader or writer: " + error);
 		}

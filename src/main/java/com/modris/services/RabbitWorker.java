@@ -31,7 +31,7 @@ public class RabbitWorker {
 	public void bestmove(ClientObject payload) {
 		stockfish.setStrength(payload.getChosenElo());
 		String answer = stockfish.findBestMove(payload.getFen());
-		logger.info(payload.toString()+", Best move: "+answer);
+		//logger.info(payload.toString()+", Best move: "+answer);
 		messageTemplate.convertAndSend("amq.topic","bestmove" + payload.getUserId(), answer);
 	}
 }

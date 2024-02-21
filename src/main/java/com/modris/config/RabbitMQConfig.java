@@ -10,6 +10,7 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,7 +18,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 public class RabbitMQConfig  {
-
+	
+	@Value("${RABBITMQ_USERNAME}")
+	private String usernameRabbit;
+	
+	@Value("${RABBITMQ_PASSWORD}")
+	private String passwordRabbit;
+	
 	@Bean
 	public TopicExchange topicExchange() {
 	    return new TopicExchange("amqp.topic");
@@ -53,8 +60,8 @@ public class RabbitMQConfig  {
 	@Bean
 	public ConnectionFactory connectionFactory() {
 		CachingConnectionFactory connectionFactory = new CachingConnectionFactory("rabbitmq");
-		connectionFactory.setUsername("guest");
-		connectionFactory.setPassword("guest");
+		connectionFactory.setUsername(usernameRabbit);
+		connectionFactory.setPassword(passwordRabbit);
 		return connectionFactory;
 	}
 	

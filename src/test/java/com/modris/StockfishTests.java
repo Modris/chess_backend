@@ -15,6 +15,9 @@ import com.modris.model.Stockfish;
 @SpringBootTest
 public class StockfishTests {
 
+/*
+ THESE TESTS REQUIRE A RUNNING STOCKFISH ENGINE ON YOUR MACHINE.
+ */
 	
 	@Autowired
 	private Stockfish stockfish;
