@@ -4,7 +4,6 @@ package com.modris.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,7 @@ import com.modris.model.ClientObject;
 import com.modris.model.Stockfish;
 
 @Service
-@RabbitListener(queues = "direct_bestmove")
+
 public class RabbitWorker {
 	
 	private Stockfish stockfish;
@@ -27,11 +26,11 @@ public class RabbitWorker {
 		
 	}
 
-	@RabbitHandler
+	@RabbitListener(queues = "direct_bestmove")
 	public void bestmove(ClientObject payload) {
 		stockfish.setStrength(payload.getChosenElo());
 		String answer = stockfish.findBestMove(payload.getFen());
-		//logger.info(payload.toString()+", Best move: "+answer);
+		logger.info(payload.toString()+", Best move: "+answer);
 		messageTemplate.convertAndSend("amq.topic","bestmove" + payload.getUserId(), answer);
 	}
 }

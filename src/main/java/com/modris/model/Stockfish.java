@@ -22,7 +22,7 @@ public class Stockfish {
 	private OutputStreamWriter writer = null;
 
 	public Stockfish(String engineLocation) {
-		this.strength = 1600; // default elo...
+		this.strength = 1500; // default elo...
 		this.processBuilder = new ProcessBuilder(engineLocation);
 	}
 	
@@ -46,7 +46,7 @@ public class Stockfish {
 	public String findBestMove(String fen) {
 		synchronized (processLock) {
 			if (this.process != null && this.process.isAlive()) {
-			//	logger.info("Finding the best move...");
+				logger.info("Finding the best move for "+fen);
 
 				try {
 
@@ -66,7 +66,7 @@ public class Stockfish {
 					writer.write(fenPosition);
 					writer.flush();
 
-					writer.write("go movetime 100\n"); // 200ms movetime.
+					writer.write("go movetime 100\n"); // 100ms movetime.
 					writer.flush();
 
 					String line = "";
@@ -81,6 +81,7 @@ public class Stockfish {
 				} catch (IOException error) {
 					logger.error("Error in finding the best move. Writer/Reader: " + error);
 				}
+			// if stockfish engine isn't running then we launch it
 			} else {
 				logger.error("Can't find the best move if Stockfish engine is not running! Something went wrong. Restarting engine.");
 				close();

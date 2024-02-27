@@ -36,12 +36,9 @@ achieve this. Afterwards with BufferedReader i could read what the engine respon
 * "setoption name UCI_Elo value " + this.strength + "\n". We set the ELO value. Min = 1320. Max = 3190. The Validation is done at Chess_Manager side before the payload hits the queue.
 
 * "position fen " + fen + "\n. Similarly the FEN syntax validation is done at Chess_Manager. Upon the unlikely scenario that we would receive a bad FEN
-(currently FEN is taken directly from a Chess Board from frontend so a bad actor would have to send specifically incorrect FEN's) the program would attempt to reopen the Stockfish engine
-and try to execute the message again and again and again. I should implement max retry attemps before a message is deemed as a poisoned message. 
+(currently FEN is taken directly from a Chess Board from frontend so a bad actor would have to send specifically incorrect FEN's) the program would close the ProcessBuilder, BufferedReader and OutputStreamWriter and restart Stockfish engine while returning an empty message for the bad FEN or "poison pill" message.
 
-* "go movetime 100\n". Calculates the bestmove. I gave it 100 ms for each calculation. I played around with these time values. 1000 ms, 2000 ms or even 200, 250 ms. The outcome of the moves
-was nearly identical. I ended up sticking with 100 ms because the Stockfish engine is already strong as it is and some high elo blunders are actually from lack
-of depth and ponder option. It's a known limitation of Stockfish engine and perhaps knowing this i would have used a different chess engine for this project.
+* "go movetime 100\n". Calculates the bestmove. I gave it 100 ms for each calculation. I played around with these time values. 1000 ms, 2000 ms or even 200, 250 ms. The outcome of the moves was nearly identical. I ended up sticking with 100 ms because the Stockfish engine is already strong as it is and some high elo blunders are actually from lackof depth and ponder option. It's a known limitation of Stockfish engine and perhaps knowing this i would have used a different chess engine for this project.
 
 # RabbitMQ Config
 
