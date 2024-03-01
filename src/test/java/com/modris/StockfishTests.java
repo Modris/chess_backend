@@ -1,15 +1,8 @@
 package com.modris;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import com.modris.model.Stockfish;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @SpringBootTest
@@ -18,7 +11,7 @@ public class StockfishTests {
 /*
  THESE TESTS REQUIRE A RUNNING STOCKFISH ENGINE ON YOUR MACHINE.
  */
-	
+	/*
 	@Autowired
 	private Stockfish stockfish;
 	

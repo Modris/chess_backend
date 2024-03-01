@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration>
+
+<configuration scan="true" scanPeriod="30 seconds">
+    <import class="ch.qos.logback.classic.encoder.PatternLayoutEncoder" />
+    <import class="ch.qos.logback.core.ConsoleAppender" />
+
+    <appender name="STDOUT" class="ConsoleAppender">
+      <withJansi>true</withJansi>
+        <encoder class="PatternLayoutEncoder">
+            <pattern>%d{yyy-MM-dd HH:mm:ss.SSS} [%thread] %highlight(%-5level) %logger{36} -- %msg%n</pattern>
+        </encoder>
+    </appender>
+ <!--   
+<property name="LOG_FILE" value="LogFile" />
+<property name="LOG_DIR" value="F:/logback" />
+<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_DIR}/${LOG_FILE}.log</file> 
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>${LOG_DIR}/%d{yyyy/MM}/${LOG_FILE}.gz</fileNamePattern>
+        <totalSizeCap>3GB</totalSizeCap>
+    </rollingPolicy>
+    <encoder>
+        <pattern>%d{yyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>
+    </encoder>
+</appender> 
+-->
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

@@ -81,14 +81,23 @@ public class Stockfish {
 				} catch (IOException error) {
 					logger.error("Error in finding the best move. Writer/Reader: " + error);
 				}
-			// if stockfish engine isn't running then we launch it
-			} else {
-				logger.error("Can't find the best move if Stockfish engine is not running! Something went wrong. Restarting engine.");
-				close();
-				start();
-				return "";
-			}
-			return "";
+
+			} 
+				logger.warn("Can't find the best move if Stockfish engine is not running! Something went wrong. Restarting engine.");
+				close(); // close ProcessBuilder, Writer and Reader.
+				start(); // relaunch stockfish engine.
+				return "Rejected.";
+				/*
+			 Temporary Fix: With 1 bad message which will crash Stockfish engine 
+			 the rest of the messages (if they are  good) still get processed.
+			 I tested this with anothe application sending bad/good message mix.
+			 Even multiple bad ones and afterwards good ones get processed anyways.
+			
+			 Future fix: Temporarily block RabbitMQ direct_bestmove queue from 
+			 receiving more messages till Stockfish engine starts up. And reroute 
+			 to the rest of the messages to waiting queue instead of dead letter queue.
+			 
+			 */
 		}
 	}
 
